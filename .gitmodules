@@ -1,0 +1,6 @@
+[submodule "ace-jump-mode"]
+	path = ace-jump-mode
+	url = http://github.com/winterTTr/ace-jump-mode.git
+[submodule "magit"]
+	path = magit
+	url = http://github.com/magit/magit.git
