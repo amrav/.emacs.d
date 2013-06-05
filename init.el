@@ -30,7 +30,7 @@
 	      uniquify-buffer-name-style 'forward
 	      save-place t)
 
-(set-face-attribute 'default nil :height 85)
+(set-face-attribute 'default nil :height 150)
 (global-font-lock-mode 1)
 
 ;; Remove toolbar, menubar, scrollbar and tooltips
