@@ -28,7 +28,8 @@
 	      c-basic-offset 8
 	      edebug-trace t
 	      uniquify-buffer-name-style 'forward
-	      save-place t)
+	      save-place t
+	      set-fringe-style -1)
 
 (set-face-attribute 'default nil :height 150)
 (global-font-lock-mode 1)
@@ -40,8 +41,8 @@
 (tooltip-mode -1)
 (set-scroll-bar-mode 'nil)
 
-;; for solarized color theme
-(load-theme 'solarized-dark t)
+;; for tango color theme
+(load-theme 'tango)
 
 ;; show parentheses
 (show-paren-mode t)
@@ -64,6 +65,11 @@
 
 ;; Custom keybindings
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
+(global-set-key (kbd "C-c C-m") 'execute-extended-command)
+
+(global-set-key (kbd "C-w") 'backward-kill-word)
+(global-set-key (kbd "C-x C-k") 'kill-region)
+(global-set-key (kbd "C-c C-k") 'kill-region)
 
 ;; Copy & paste to/from other apps
 (setq x-select-enable-clipboard t)
