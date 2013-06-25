@@ -118,7 +118,7 @@ c-lineup-arglist-tabs-only) t
  ido-use-filename-at-point nil ; don't use filename at point (annoying)
  ido-use-url-at-point nil ; don't use url at point (annoying)
  ido-enable-flex-matching t ; be flexible
- ido-max-prospects 6 ; don't spam my minibuffer
+ ido-max-prospects 6 ; don't spam minibuffer
  ido-confirm-unique-completion nil ; don't wait for RET with unique completion
  ido-default-file-method 'selected-window ; open files in selected window
  ido-default-buffer-method 'selected-window ; open buffers in selected window
@@ -160,7 +160,6 @@ c-lineup-arglist-tabs-only) t
 (global-set-key (kbd "C-c f") 'flyspell-check-previous-highlighted-word)
 
 ;; text mode
-(add-hook 'text-mode-hook 'turn-on-filladapt-mode)
 (add-hook 'text-mode-hook 'flyspell-mode)
 
 ;; autocomplete
@@ -281,3 +280,9 @@ c-lineup-arglist-tabs-only) t
 
 (require 'whitespace)
 (global-set-key (kbd "C-c w") 'global-whitespace-mode)
+
+;; sass mode (used marmalade for haml first?)
+
+;; (add-to-list 'load-path "~/.emacs.d/sass-mode")
+;; (require 'sass-mode)
+;; (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
