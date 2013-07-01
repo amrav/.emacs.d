@@ -286,3 +286,18 @@ c-lineup-arglist-tabs-only) t
 ;; (add-to-list 'load-path "~/.emacs.d/sass-mode")
 ;; (require 'sass-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.scss$" . sass-mode))
+
+;; scss mode
+
+(add-to-list 'load-path "~/.emacs.d/scss-mode")
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+(setq scss-compile-at-save nil)
+
+;; for mutt
+(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+(defun my-mail-mode-hook ()
+  (auto-fill-mode 1)
+  (abbrev-mode 1)
+  (local-set-key "\C-Xk" 'server-edit))
+(add-hook 'mail-mode-hook 'my-mail-mode-hook)
