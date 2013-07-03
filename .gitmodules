@@ -6,7 +6,7 @@
 	url = http://github.com/magit/magit.git
 [submodule "el-get"]
 	path = el-get
-	url = git://github.com/dimitri/el-get.git
+	url = http://github.com/dimitri/el-get.git
 [submodule "scss-mode"]
 	path = scss-mode
-	url = https://github.com/antonj/scss-mode.git
+	url = http://github.com/antonj/scss-mode.git
