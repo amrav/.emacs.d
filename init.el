@@ -43,15 +43,15 @@
 (tooltip-mode -1)
 (set-scroll-bar-mode 'nil)
 
-;; for tango color theme
-(load-theme 'tango)
+;; for zenburn color theme
+(load-theme 'zenburn)
 
 ;; show parentheses
 (show-paren-mode t)
 (setq show-paren-delay 0)
 (require 'paren)
-(set-face-background 'show-paren-match-face "#268bd2")
-(set-face-foreground 'show-paren-match-face "#def")
+(set-face-background 'show-paren-match-face "#00bfff")
+(set-face-foreground 'show-paren-match-face "#fff")
 (set-face-attribute 'show-paren-match-face nil :weight 'extra-bold)
 
 ;; General mode loading
