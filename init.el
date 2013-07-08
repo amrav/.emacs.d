@@ -6,6 +6,8 @@
 (add-to-list 'package-archives
 	     '("marmalade" .
 	       "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
 ;; General customizations
@@ -247,30 +249,33 @@ c-lineup-arglist-tabs-only) t
   (get-buffer-process (current-buffer))
   (if string string (current-kill 0))))
 
-;; improve the colors with solarized theme too
-(defun my-term-hook ()
-  (define-key term-raw-map "\C-y" 'my-term-paste)
-  (let ((base03  "#002b36")
-        (base02  "#073642")
-        (base01  "#586e75")
-        (base00  "#657b83")
-        (base0   "#839496")
-        (base1   "#93a1a1")
-        (base2   "#eee8d5")
-        (base3   "#fdf6e3")
-        (yellow  "#b58900")
-        (orange  "#cb4b16")
-        (red     "#dc322f")
-        (magenta "#d33682")
-        (violet  "#6c71c4")
-        (blue    "#268bd2")
-        (cyan    "#2aa198")
-        (green   "#859900"))
-    (setq ansi-term-color-vector
-          (vconcat `(unspecified ,base02 ,red ,green ,yellow ,blue
-                                 ,magenta ,cyan ,base2)))))
+;; no longer necessary in Tango theme
 
-(add-hook 'term-mode-hook 'my-term-hook)
+;; improve the colors with solarized theme too
+;; (defun my-term-hook ()
+;;   (define-key term-raw-map "\C-y" 'my-term-paste)
+;;   (let ((base03  "#002b36")
+;;         (base02  "#073642")
+;;         (base01  "#586e75")
+;;         (base00  "#657b83")
+;;         (base0   "#839496")
+;;         (base1   "#93a1a1")
+;;         (base2   "#eee8d5")
+;;         (base3   "#fdf6e3")
+;;         (yellow  "#b58900")
+;;         (orange  "#cb4b16")
+;;         (red     "#dc322f")
+;;         (magenta "#d33682")
+;;         (violet  "#6c71c4")
+;;         (blue    "#268bd2")
+;;         (cyan    "#2aa198")
+;;         (green   "#859900"))
+;;     (setq ansi-term-color-vector
+;;           (vconcat `(unspecified ,base02 ,red ,green ,yellow ,blue
+;;                                  ,magenta ,cyan ,base2)))))
+
+
+;; (add-hook 'term-mode-hook 'my-term-hook)
 
 ;; magit mode
 
@@ -295,9 +300,26 @@ c-lineup-arglist-tabs-only) t
 (setq scss-compile-at-save nil)
 
 ;; for mutt
+(fset 'mt
+   [?\C-x ?\C-m ?a ?n ?s ?i ?- ?t ?e ?r ?m return ?m ?u ?t ?t return])
+
+  
+  
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (defun my-mail-mode-hook ()
   (auto-fill-mode 1)
   (abbrev-mode 1)
   (local-set-key "\C-Xk" 'server-edit))
 (add-hook 'mail-mode-hook 'my-mail-mode-hook)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "9f443833deb3412a34d2d2c912247349d4bd1b09e0f5eaba11a3ea7872892000" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
