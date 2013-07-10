@@ -44,7 +44,7 @@
 (set-scroll-bar-mode 'nil)
 
 ;; for zenburn color theme
-(load-theme 'zenburn)
+(load-theme 'zenburn t)
 
 ;; show parentheses
 (show-paren-mode t)
@@ -72,6 +72,7 @@
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-c C-k") 'kill-region)
+
 
 ;; Copy & paste to/from other apps
 (setq x-select-enable-clipboard t)
@@ -120,7 +121,7 @@ c-lineup-arglist-tabs-only) t
  ido-use-filename-at-point nil ; don't use filename at point (annoying)
  ido-use-url-at-point nil ; don't use url at point (annoying)
  ido-enable-flex-matching t ; be flexible
- ido-max-prospects 6 ; don't spam minibuffer
+;; ido-max-prospects 100 ; don't spam minibuffer
  ido-confirm-unique-completion nil ; don't wait for RET with unique completion
  ido-default-file-method 'selected-window ; open files in selected window
  ido-default-buffer-method 'selected-window ; open buffers in selected window
@@ -192,7 +193,8 @@ c-lineup-arglist-tabs-only) t
   "ace-jump-mode"
   "Emacs quick move minor mode"
   t)
-(define-key global-map (kbd "M-h") 'ace-jump-mode)
+(global-set-key (kbd "C-c C-j") 'ace-jump-mode)
+(global-set-key (kbd "C-x C-j") 'ace-jump-mode)
 
 (autoload
   'ace-jump-mode-pop-mark
@@ -215,6 +217,9 @@ c-lineup-arglist-tabs-only) t
     (linum-mode -1)))
 
 (global-set-key [remap goto-line] 'goto-line-with-feedback)
+
+;; Ansi-term
+(global-set-key (kbd "C-c C-t") 'ansi-term)
 
 ;; to make ansi-term behave nicely
 
@@ -303,14 +308,13 @@ c-lineup-arglist-tabs-only) t
 (fset 'mt
    [?\C-x ?\C-m ?a ?n ?s ?i ?- ?t ?e ?r ?m return ?m ?u ?t ?t return])
 
-  
-  
 (add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
 (defun my-mail-mode-hook ()
   (auto-fill-mode 1)
   (abbrev-mode 1)
   (local-set-key "\C-Xk" 'server-edit))
 (add-hook 'mail-mode-hook 'my-mail-mode-hook)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -323,3 +327,4 @@ c-lineup-arglist-tabs-only) t
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
