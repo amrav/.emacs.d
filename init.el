@@ -73,6 +73,7 @@
 (global-set-key (kbd "C-x C-k") 'kill-region)
 (global-set-key (kbd "C-c C-k") 'kill-region)
 
+(global-set-key (kbd "C-c C-c") 'comment-region)
 
 ;; Copy & paste to/from other apps
 (setq x-select-enable-clipboard t)
