@@ -10,3 +10,6 @@
 [submodule "scss-mode"]
 	path = scss-mode
 	url = http://github.com/antonj/scss-mode.git
+[submodule "flx"]
+	path = flx
+	url = http://github.com/lewang/flx

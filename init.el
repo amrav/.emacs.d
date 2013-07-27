@@ -316,6 +316,17 @@ c-lineup-arglist-tabs-only) t
   (local-set-key "\C-Xk" 'server-edit))
 (add-hook 'mail-mode-hook 'my-mail-mode-hook)
 
+;; for flx-ido
+(add-to-list 'load-path "~/.emacs.d/flx")
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-use-faces nil)
+;; tune garbage collection
+(setq gc-cons-threshold 20000000)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
