@@ -172,6 +172,8 @@ c-lineup-arglist-tabs-only) t
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 
+(autoload 'auto-complete-mode "auto-complete-mode")
+
 (global-set-key [C-tab] 'auto-complete)
 
 ;; backups
@@ -340,3 +342,7 @@ c-lineup-arglist-tabs-only) t
  ;; If there is more than one, they won't work right.
  )
 
+;; Assembler for Spim uses #, not ;
+(add-hook 'asm-mode-set-comment-hook
+'(lambda ()
+(setq asm-comment-char ?#)))
