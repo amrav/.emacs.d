@@ -2,10 +2,7 @@
 ;; Automatically generated file!!! DO NOT EDIT!!!
 
 (setq url-cookie-storage
- '(("marmalade-repo.org"
-  [url-cookie "httpOnly" nil "Thu, 08 Aug 2013 00:19:15 GMT" "/" "marmalade-repo.org" nil]
-  [url-cookie "connect.sid" "X54X3siEqnk6ogrlvLcXOVRR.9%2BsVWruOWg2hs3AD36BXk9rXYFzWgWDO1jojF73qcyg" "Thu, 08 Aug 2013 00:19:15 GMT" "/" "marmalade-repo.org" nil]))
-)
+ 'nil)
 (setq url-cookie-secure-storage
  'nil)
 
