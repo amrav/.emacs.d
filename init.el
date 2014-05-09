@@ -1,13 +1,11 @@
 (server-start)
 
-;; for marmalade
-
 (require 'package)
+
+;; for melpa
 (add-to-list 'package-archives
-	     '("marmalade" .
-	       "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+
 (package-initialize)
 
 ;; General customizations
@@ -18,14 +16,13 @@
 	      require-final-newline t
 	      resize-minibuffer-frame t
 	      column-number-mode t
-	      display-battery-mode t
 	      transient-mark-mode t
 	      next-line-add-newlines nil
 	      blink-matching-paren t
 	      quack-pretty-lambda-p t
 	      blink-matching-delay 0.25
 	      vc-follow-symlinks t
-	      indent-tabs-mode t
+	      indent-tabs-mode nil
 	      tab-width 8
 	      c-basic-offset 8
 	      edebug-trace t
@@ -33,7 +30,6 @@
 	      save-place t
 	      set-fringe-style -1)
 
-(set-face-attribute 'default nil :height 150)
 (global-font-lock-mode 1)
 
 ;; Remove toolbar, menubar, scrollbar and tooltips
@@ -42,6 +38,9 @@
 (menu-bar-mode -1)
 (tooltip-mode -1)
 (set-scroll-bar-mode 'nil)
+
+;; for font
+(set-default-font "Inconsolata-18")
 
 ;; for zenburn color theme
 (load-theme 'zenburn t)
@@ -78,41 +77,6 @@
 ;; Copy & paste to/from other apps
 (setq x-select-enable-clipboard t)
 
-;; c-mode
-(add-hook 'c-mode-common-hook 'turn-on-filladapt-mode)
-
-(defmacro define-new-c-style (name derived-from style-alists tabs-p match-path)
-  `(progn
-     (add-hook 'c-mode-common-hook
-(lambda ()
-(c-add-style ,name
-'(,derived-from (c-offsets-alist
-,style-alists)))))
-     (add-hook 'c-mode-hook
-(lambda ()
-(let ((filename (buffer-file-name)))
-(when (and filename
-(string-match (expand-file-name ,match-path) filename))
-(setq indent-tabs-mode ,tabs-p)
-(c-set-style ,name)))))))
-
-(defun c-lineup-arglist-tabs-only (ignored)
-  "Line up argument lists with tabs, not spaces"
-  (let* ((anchor (c-langelem-pos c-syntactic-element))
-         (column (c-langelem-2nd-pos c-syntactic-element))
-         (offset (- (1+ column) anchor))
-         (steps (floor offset c-basic-offset)))
-    (* (max steps 1)
-       c-basic-offset)))
-
-;; Syntax for define-new-c-style:
-;; <style name> <derived from> <style alist> <tabs-p> <path to apply to>
-
-(define-new-c-style "linux-tabs-only" "linux" (arglist-cont-nonempty
-c-lineup-gcc-asm-reg
-c-lineup-arglist-tabs-only) t
-"~")
-
 ;; ido
 
 (setq
@@ -122,22 +86,11 @@ c-lineup-arglist-tabs-only) t
  ido-use-filename-at-point nil ; don't use filename at point (annoying)
  ido-use-url-at-point nil ; don't use url at point (annoying)
  ido-enable-flex-matching t ; be flexible
-;; ido-max-prospects 100 ; don't spam minibuffer
+ ;; ido-max-prospects 100 ; don't spam minibuffer
  ido-confirm-unique-completion nil ; don't wait for RET with unique completion
  ido-default-file-method 'selected-window ; open files in selected window
  ido-default-buffer-method 'selected-window ; open buffers in selected window
  ido-max-directory-size 100000)
-
-;; Dired
-
-(add-hook 'dired-mode-hook
-(lambda ()
-(define-key dired-mode-map (kbd "<return>")
-'dired-find-alternate-file) ; was dired-advertised-find-file
-(define-key dired-mode-map (kbd "^")
-(lambda () (interactive) (find-alternate-file "..")))))
-
-(put 'dired-find-alternate-file 'disabled nil)
 
 ;; rcirc
 (setq rcirc-server-alist
@@ -160,11 +113,11 @@ c-lineup-arglist-tabs-only) t
   (kill-all-mode-buffers 'rcirc-mode))
 
 ;; flyspell mode
-(add-hook 'prog-mode-hook 'flyspell-prog-mode)
-(global-set-key (kbd "C-c f") 'flyspell-check-previous-highlighted-word)
+;; (add-hook 'prog-mode-hook 'flyspell-prog-mode)
+;; (global-set-key (kbd "C-c f") 'flyspell-check-previous-highlighted-word)
 
 ;; text mode
-(add-hook 'text-mode-hook 'flyspell-mode)
+;; (add-hook 'text-mode-hook 'flyspell-mode)
 
 ;; autocomplete
 (add-to-list 'load-path "~/.emacs.d/")
@@ -294,6 +247,9 @@ c-lineup-arglist-tabs-only) t
 (require 'whitespace)
 (global-set-key (kbd "C-c w") 'global-whitespace-mode)
 
+;; for zsh
+(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
+
 ;; sass mode (used marmalade for haml first?)
 
 ;; (add-to-list 'load-path "~/.emacs.d/sass-mode")
@@ -307,17 +263,6 @@ c-lineup-arglist-tabs-only) t
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
 (setq scss-compile-at-save nil)
 
-;; for mutt
-(fset 'mt
-   [?\C-x ?\C-m ?a ?n ?s ?i ?- ?t ?e ?r ?m return ?m ?u ?t ?t return])
-
-(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
-(defun my-mail-mode-hook ()
-  (auto-fill-mode 1)
-  (abbrev-mode 1)
-  (local-set-key "\C-Xk" 'server-edit))
-(add-hook 'mail-mode-hook 'my-mail-mode-hook)
-
 ;; for flx-ido
 (add-to-list 'load-path "~/.emacs.d/flx")
 (require 'flx-ido)
@@ -328,19 +273,6 @@ c-lineup-arglist-tabs-only) t
 (setq ido-use-faces nil)
 ;; tune garbage collection
 (setq gc-cons-threshold 20000000)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("5e1d1564b6a2435a2054aa345e81c89539a72c4cad8536cfe02583e0b7d5e2fa" "9f443833deb3412a34d2d2c912247349d4bd1b09e0f5eaba11a3ea7872892000" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;; Assembler for Spim uses #, not ;
 (add-hook 'asm-mode-set-comment-hook
@@ -361,3 +293,79 @@ c-lineup-arglist-tabs-only) t
 
 ;; For flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+;; For ipython
+
+;; (require 'ipython)
+(put 'upcase-region 'disabled nil)
+
+;; for OS X
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "/opt/local/bin:/usr/local/bin:" (getenv "PATH")))
+  (push "/usr/local/bin" exec-path))
+
+;; for JS
+(setq js-indent-level 4)
+
+;; Autopair quotes and braces
+(require 'autopair)
+(autopair-global-mode)
+
+;; For smart-tabs-mode
+(smart-tabs-insinuate 'c 'javascript)
+
+;; pbcopy - For OS X copying
+(require 'pbcopy)
+(turn-on-pbcopy)
+
+;; Projectile mode
+(projectile-global-mode)
+
+;; Mail mode for mutt
+(add-to-list 'auto-mode-alist '("/mutt" . mail-mode))
+
+
+;; mu4e
+(add-to-list 'load-path "/usr/local/Cellar/mu/0.9.9.5/share/emacs/site-lisp/mu4e")
+(require 'mu4e)
+
+;; default
+(setq mu4e-maildir "~/.mail/vikrantvarma")
+
+(setq mu4e-drafts-folder "/drafts")
+(setq mu4e-sent-folder   "/sent")
+(setq mu4e-trash-folder  "/Trash")
+
+;; don't save message to Sent Messages, Gmail/IMAP takes care of this
+(setq mu4e-sent-messages-behavior 'delete)
+
+;; setup some handy shortcuts
+;; you can quickly switch to your Inbox -- press ``ji''
+;; then, when you want archive some messages, move them to
+;; the 'All Mail' folder by pressing ``ma''.
+
+(setq mu4e-maildir-shortcuts
+      '( ("/INBOX" . ?i)
+         ("/sent" . ?s)
+         ("/Trash" . ?t)
+         ("/archive" . ?a)))
+
+;; allow for updating mail using 'U' in the main view:
+(setq mu4e-get-mail-command "offlineimap -o")
+
+;; something about ourselves
+(setq
+ user-mail-address "vikrant.varma94@gmail.com"
+ user-full-name  "Vikrant Varma")
+
+;; sending mail -- replace USERNAME with your gmail username
+;; also, make sure the gnutls command line utils are installed
+;; package 'gnutls-bin' in Debian/Ubuntu
+
+;; alternatively, for emacs-24 you can use:
+(setq message-send-mail-function 'message-send-mail-with-sendmail
+      sendmail-program "msmtp"
+      user-full-name "Vikrant Varma")
+
+;; don't keep message buffers around
+(setq message-kill-buffer-on-exit t)

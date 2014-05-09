@@ -1,0 +1,1 @@
+("~/.emacs.d/" "~/.dotfiles/" "~/.mutt/mutt-colors-solarized/" "/usr/local/")
