@@ -369,3 +369,6 @@
 
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
+
+;; Use w3m to display html as text
+(setq mu4e-html2text-command "w3m -dump -T text/html")
