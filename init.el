@@ -22,9 +22,6 @@
 	      quack-pretty-lambda-p t
 	      blink-matching-delay 0.25
 	      vc-follow-symlinks t
-	      indent-tabs-mode nil
-	      tab-width 8
-	      c-basic-offset 8
 	      edebug-trace t
 	      uniquify-buffer-name-style 'forward
 	      save-place t
@@ -47,7 +44,6 @@
 
 ;; show parentheses
 (show-paren-mode t)
-(setq show-paren-delay 0)
 (require 'paren)
 (set-face-background 'show-paren-match-face "#00bfff")
 (set-face-foreground 'show-paren-match-face "#fff")
@@ -70,7 +66,6 @@
 
 (global-set-key (kbd "C-w") 'backward-kill-word)
 (global-set-key (kbd "C-x C-k") 'kill-region)
-(global-set-key (kbd "C-c C-k") 'kill-region)
 
 (global-set-key (kbd "C-c C-c") 'comment-region)
 
@@ -348,15 +343,20 @@
       '( ("/INBOX" . ?i)
          ("/sent" . ?s)
          ("/Trash" . ?t)
+         ("/drafts" . ?d)
          ("/archive" . ?a)))
 
 ;; allow for updating mail using 'U' in the main view:
-(setq mu4e-get-mail-command "offlineimap -o")
+(setq mu4e-get-mail-command "offlineimap -o"
+      mu4e-update-interval 120
+      mu4e-headers-auto-update t)
 
 ;; something about ourselves
-(setq
+(setq mu4e-reply-to-address "vikrant.varma94@gmail.com"
  user-mail-address "vikrant.varma94@gmail.com"
  user-full-name  "Vikrant Varma")
+
+(setq mu4e-user-mail-address-list '("vikrant.varma94@gmail.com"))
 
 ;; sending mail -- replace USERNAME with your gmail username
 ;; also, make sure the gnutls command line utils are installed
@@ -364,11 +364,41 @@
 
 ;; alternatively, for emacs-24 you can use:
 (setq message-send-mail-function 'message-send-mail-with-sendmail
-      sendmail-program "msmtp"
-      user-full-name "Vikrant Varma")
+      sendmail-program "msmtp")
 
-;; don't keep message buffers around
-(setq message-kill-buffer-on-exit t)
+;; don't keep message buffers around, and use fancy chars
+(setq message-kill-buffer-on-exit t
+      mu4e-use-fancy-chars t)
+
+;; Try to display images in mu4e
+(setq
+ mu4e-view-show-images t
+ mu4e-view-image-max-width 800)
+
+;; Headers to show
+(setq mu4e-headers-fields
+      '( (:human-date . 10)
+         (:flags . 5)
+         (:mailing-list . 15)
+         (:from-or-to . 40)
+         (:subject . nil)))
 
 ;; Use w3m to display html as text
 (setq mu4e-html2text-command "w3m -dump -T text/html")
+
+;;; message view action
+(defun mu4e-msgv-action-view-in-browser (msg)
+  "View the body of the message in a web browser."
+  (interactive)
+  (let ((html (mu4e-msg-field (mu4e-message-at-point t) :body-html))
+        (tmpfile (format "%s/%d.html" temporary-file-directory (random))))
+    (unless html (error "No html part for this message"))
+    (with-temp-file tmpfile
+      (insert
+       "<html>"
+       "<head><meta http-equiv=\"content-type\""
+       "content=\"text/html;charset=UTF-8\">"
+       html))
+    (browse-url (concat "file://" tmpfile))))
+(add-to-list 'mu4e-view-actions
+             '("View in browser" . mu4e-msgv-action-view-in-browser) t)
