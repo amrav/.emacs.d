@@ -25,7 +25,8 @@
 	      edebug-trace t
 	      uniquify-buffer-name-style 'forward
 	      save-place t
-	      set-fringe-style -1)
+	      set-fringe-style -1
+	      indent-tabs-mode nil)
 
 (global-font-lock-mode 1)
 
@@ -55,10 +56,27 @@
 (rcirc-track-minor-mode t)
 (electric-indent-mode 1)
 
+;;; Indentation for python
+
+;; Ignoring electric indentation
+(defun electric-indent-ignore-python (char)
+  "Ignore electric indentation for python-mode"
+  (if (equal major-mode 'python-mode)
+      `no-indent'
+    nil))
+(add-hook 'electric-indent-functions 'electric-indent-ignore-python)
+
+;; Enter key executes newline-and-indent
+(defun set-newline-and-indent ()
+  "Map the return key with `newline-and-indent'"
+  (local-set-key (kbd "RET") 'newline-and-indent))
+(add-hook 'python-mode-hook 'set-newline-and-indent)
+
 ;; Final newline handling
 (setq require-final-newline t)
 (setq next-line-extends-end-of-buffer nil)
 (setq next-line-add-newlines nil)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Custom keybindings
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
@@ -121,6 +139,7 @@
 (ac-config-default)
 
 (autoload 'auto-complete-mode "auto-complete-mode")
+(add-to-list 'ac-modes 'jade-mode)
 
 (global-set-key [C-tab] 'auto-complete)
 
@@ -300,14 +319,13 @@
   (push "/usr/local/bin" exec-path))
 
 ;; for JS
-(setq js-indent-level 4)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(custom-set-variables
+ '(js2-basic-offset 2))
 
 ;; Autopair quotes and braces
 (require 'autopair)
 (autopair-global-mode)
-
-;; For smart-tabs-mode
-(smart-tabs-insinuate 'c 'javascript)
 
 ;; pbcopy - For OS X copying
 (require 'pbcopy)
@@ -402,3 +420,22 @@
     (browse-url (concat "file://" tmpfile))))
 (add-to-list 'mu4e-view-actions
              '("View in browser" . mu4e-msgv-action-view-in-browser) t)
+
+;; Go autocomplete
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+
+;; web mode
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(setq web-mode-ac-sources-alist '(("css" . (ac-source-css-property)) ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+
+;; paredit
+
+(defun my-paredit-nonlisp ()
+  "Turn on paredit mode for non-lisps."
+  (interactive)
+  (set (make-local-variable 'paredit-space-for-delimiter-predicates)
+       '((lambda (endp delimiter) nil)))
+  (paredit-mode 1))
+(add-hook 'js-mode-hook 'my-paredit-nonlisp)
